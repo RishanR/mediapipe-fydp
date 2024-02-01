@@ -68,7 +68,7 @@ class ImageClassifier(classifier.Classifier):
       train_data: classification_ds.ClassificationDataset,
       validation_data: classification_ds.ClassificationDataset,
       options: image_classifier_options.ImageClassifierOptions,
-      optimizer: tf.keras.optimizers.Optimizerm
+      optimizer: tf.keras.optimizers.Optimizer
   ) -> 'ImageClassifier':
     """Creates and trains an ImageClassifier.
 
