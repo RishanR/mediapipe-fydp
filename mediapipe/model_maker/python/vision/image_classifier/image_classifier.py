@@ -68,6 +68,7 @@ class ImageClassifier(classifier.Classifier):
       train_data: classification_ds.ClassificationDataset,
       validation_data: classification_ds.ClassificationDataset,
       options: image_classifier_options.ImageClassifierOptions,
+      optimizer: tf.keras.optimizers.Optimizerm
   ) -> 'ImageClassifier':
     """Creates and trains an ImageClassifier.
 
@@ -80,6 +81,7 @@ class ImageClassifier(classifier.Classifier):
       train_data: Training data.
       validation_data: Validation data.
       options: configuration to create image classifier.
+      optimizer: the optimizer of your choice.
 
     Returns:
       An instance based on ImageClassifier.
@@ -96,12 +98,13 @@ class ImageClassifier(classifier.Classifier):
         label_names=train_data.label_names,
         hparams=options.hparams,
         model_options=options.model_options)
-    image_classifier._create_and_train_model(train_data, validation_data)
+    image_classifier._create_and_train_model(train_data, validation_data, optimizer)
     return image_classifier
 
   def _create_and_train_model(
       self, train_data: classification_ds.ClassificationDataset,
-      validation_data: classification_ds.ClassificationDataset):
+      validation_data: classification_ds.ClassificationDataset,
+      optimizer: tf.keras.optimizers.Optimizer):
     """Creates and trains the model and optimizer.
 
     Args:
@@ -113,7 +116,7 @@ class ImageClassifier(classifier.Classifier):
         steps_per_epoch=self._hparams.steps_per_epoch,
         batch_size=self._hparams.batch_size,
         train_data=train_data)
-    self._optimizer = self._create_optimizer()
+    self._optimizer = optimizer
     self._train_model(
         train_data=train_data,
         validation_data=validation_data,
